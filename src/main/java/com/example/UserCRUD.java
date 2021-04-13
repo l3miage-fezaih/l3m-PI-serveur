@@ -78,7 +78,7 @@ public class UserCRUD{
         }
     }
 
-    @GetMapping("/{userId}")
+    @PostMapping("/{userId}")
     public User create(@PathVariable(value="userId") String id, @RequestBody User u, HttpServletResponse response){
         try (Connection connection = dataSource.getConnection()){
             Statement stmt = connection.createStatement();
@@ -87,8 +87,6 @@ public class UserCRUD{
                 System.err.println("Erreur HTTP 403");
                 
             }else{
-                //Jcrois que c'est bon faut faire le test
-                // Je sors du partage pour tester sur un terminal
                 User s = new User();
                 s.login = rs.getString("login");
                 s.age = rs.getInt("age");
@@ -110,5 +108,36 @@ public class UserCRUD{
         } 
     }
 
+        @PutMapping("/{userId}")
+        public User update(@PathVariable(value="userId") String id, @RequestBody User u, HttpServletResponse response){
+            try (Connection connection = dataSource.getConnection()){
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM chamis WHERE login='"+ id +"'");
+                if(rs.next()){
+                    System.err.println("Erreur HTTP 403");
+                    
+                }else{
+                    User s = new User();
+                    s.login = rs.getString("login");
+                    s.age = rs.getInt("age");
+                    if(id == u.getLogin()){
+                        int create = stmt.executeUpdate("Insert into chamis values('"+ u.getLogin() +"','"+u.getAge() +"')"); 
+                    }else
+                        System.err.println("Erreur HTTP 412");
+                }
+                return u;
+            } catch(Exception e){
+                response.setStatus(500);
+            try{
+                response.getOutputStream().print(e.getMessage());
+            } catch (Exception e2) {
+                System.err.println(e2.getMessage()); 
+            }
+            System.err.println(e.getMessage());
+            return null;
+            } 
+    }
 
+
+    
  }

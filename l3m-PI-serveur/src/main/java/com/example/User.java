@@ -9,4 +9,10 @@ public class User {
     public User(){
 
     }
+    public int getAge(){
+        return this.age;
+    }
+    public String getLogin(){
+        return this.login;
+    }
 }

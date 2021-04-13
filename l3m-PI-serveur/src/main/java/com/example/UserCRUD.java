@@ -111,20 +111,4 @@ public class UserCRUD{
     }
 
 
-    @PutMapping("/{userId}")
-    public User update(@PathVariable(value="userId") String id, HttpServletResponse response){
-        try (Connection connection = dataSource.getConnection()){
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM chamis WHERE login='"+ id +"'");
-
-            User u = new User();
-            if(!rs.next()){
-                System.err.println("Erreur HTTP 404"); 
-            }else{
-                rs.first();
-                u.login = rs.getString("login");
-                u.age = rs.getInt("age");
-            }
-            return u;
-        return null;
-        }
+ }

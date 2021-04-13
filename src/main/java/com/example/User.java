@@ -6,9 +6,7 @@ public class User {
     public int age;
     public String login;
     
-    public User(){
 
-    }
     public int getAge(){
         return this.age;
     }
